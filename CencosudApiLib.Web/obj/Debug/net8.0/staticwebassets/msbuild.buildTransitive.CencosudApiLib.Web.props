@@ -1,3 +1,0 @@
-﻿<Project>
-  <Import Project="..\buildMultiTargeting\CencosudApiLib.Web.props" />
-</Project>
