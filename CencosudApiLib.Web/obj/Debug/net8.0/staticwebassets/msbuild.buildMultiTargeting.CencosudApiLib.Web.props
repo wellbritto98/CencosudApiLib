@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\CencosudApiLib.Web.props" />
+</Project>
