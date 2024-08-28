@@ -44,11 +44,11 @@
    <li><strong>Generic Controller</strong>: Provides HTTP endpoints for CRUD operations, utilizing the generic repository for data handling.</li>
    <li><strong>Services</strong>: Includes additional services like AutoMapper for object mapping and identity services for user management.</li>
 </ul>
-<h3>Security</h3>
-<p>API security is implemented using an API key scheme for authentication. Ensure to protect your API keys and manage user permissions appropriately.</p>
 <h3>Conclusion</h3>
 <p>SimpleApiTemplate offers a solid foundation for rapidly developing robust web applications with comprehensive CRUD functionality. By abstracting common tasks into generic components, it allows developers to focus on the unique aspects of their projects, enhancing productivity and code quality.</p>
 <h3>Support</h3>
 <p>For issues, suggestions, or contributions, please open an issue or pull request in the project's GitHub repository. Your feedback and contributions are welcome!</p>
 <hr>
 <p>This README provides a basic introduction to the SimpleApiTemplate project. It's designed to get developers up and running quickly with the template, offering insight into its core features, setup instructions, and overall architecture.</p>
+
+Author: José Wellington Ferreira Britto
