@@ -42,7 +42,8 @@ var secretKey = builder.Configuration["JwtConfig:Secret"];
 //using POstgreSQL
 builder.Services.AddDbContext<DataContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("CencosudApiLib.Web"));
 });
 
 builder.Services.AddAuthentication(options =>
@@ -73,12 +74,14 @@ builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
 //Registro de Services e Repositorys///////
 //////////////////////////////////////////
 
-builder.Services.AddScoped<IExampleRepository, ExampleRepository>();
+
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
+
 builder.Services.AddScoped<IExampleService, ExampleService>();
+builder.Services.AddScoped<IExampleRepository, ExampleRepository>();
 
 //////////////////////////////////////////
 /////////////////////////////////////////
