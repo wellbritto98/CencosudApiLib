@@ -67,12 +67,25 @@ builder.Services.AddIdentityApiEndpoints<User>()
 builder.Services.AddHttpClient();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+
+
+///////////////////////////////////////////
+//Registro de Services e Repositorys///////
+//////////////////////////////////////////
+
 builder.Services.AddScoped<IExampleRepository, ExampleRepository>();
 builder.Services.AddTransient<IEmailSender, EmailSender>();
 builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IExampleService, ExampleService>();
+
+//////////////////////////////////////////
+/////////////////////////////////////////
+
+
+
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddControllers();
 builder.Services.Configure<IdentityOptions>(options =>

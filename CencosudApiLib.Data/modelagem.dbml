@@ -1,29 +1,111 @@
-//MMORPG Web Text Based Game - Modelagem de Dados - Web API
+//Modelagem Cencosud Api Lib - Aplicação de biblioteca de apis e dependencias de componentes entre endpoints
 
-Table user {
-    id varchar(255) [pk, increment] //GUID
-    name varchar(255) // not null
-    email varchar(255) // not null
-    phone varchar(15) // not null 
-    birthDate date // not null
-    password varchar(255) // not null
-    role varchar // not null
-    email_verified boolean // not null
-    created_at timestamp
+Table User {
+    id              int        [pk, increment]   // Primary Key
+    name            varchar(255) [not null]       // Nome do usuário
+    email           varchar(255) [not null, unique] // E-mail do usuário
+    password        varchar(255) [not null]      
+    created_at      timestamp   [default: `current_timestamp`] 
+    updated_at      timestamp   [default: `current_timestamp`] 
+    is_deleted      boolean     [default: false, not null] 
 }
 
-Table character {
-    id varchar(255) [pk, increment] //GUID
-    name varchar(255) // not null
-    surname varchar(255) // not null
-    age int // not null
-    birthDate date // not null date of creation
-    strength int // not null
-    dexterity int // not null
-    constitution int // not null
-    intelligence int // not null
-    wisdom int // not null
-    charisma int // not null
-    avatar varchar(255) // not null image link
-    user_id varchar(255) [ref: > user.id] //GUID
+
+Table Api {
+    id              int         [pk, increment]   // Primary Key
+    name            varchar(255) [not null, unique] // Nome da API
+    description     text        
+    baseUrl         varchar(255) [not null]     
+    version         varchar(50)  
+    created_at      timestamp   [default: `current_timestamp`] 
+    updated_at      timestamp   [default: `current_timestamp`] 
+    is_deleted      boolean     [default: false, not null] 
 }
+
+
+Table Endpoint {
+    id              int         [pk, increment]   // Primary Key
+    api_id          int         [ref: > Api.id, not null] // Foreign Key para a API
+    path            varchar(255) [not null]      
+    method          varchar(10)  [not null]       
+    description     text        
+    created_at      timestamp   [default: `current_timestamp`] 
+    updated_at      timestamp   [default: `current_timestamp`] 
+    is_deleted      boolean     [default: false, not null] 
+}
+
+Table Component {
+    id              int         [pk, increment]   // Primary Key
+    name            varchar(255) [not null, unique] // Nome do componente
+    type            ComponentType [not null]      // Tipo de componente baseado no enum ComponentType
+    description     text        
+    created_at      timestamp   [default: `current_timestamp`] 
+    updated_at      timestamp   [default: `current_timestamp`] 
+    is_deleted      boolean     [default: false, not null] 
+}
+
+Table ComponentInstance {
+    id              int         [pk, increment]   // Primary Key
+    endpoint_id     int         [ref: > Endpoint.id, not null] // Foreign Key para Endpoint
+    component_id    int         [ref: > Component.id, not null] // Foreign Key para Component
+    configuration   json        
+    created_at      timestamp   [default: `current_timestamp`] 
+    updated_at      timestamp   [default: `current_timestamp`] 
+    is_deleted      boolean     [default: false, not null] 
+}
+
+
+Enum ComponentType {
+    Procedure
+    Function
+    Middleware
+    Validation
+    DTO
+    Security
+    Configuration
+    Response
+}
+
+
+//TABELAS DE AUDITORIA 
+
+Table AuditApi {
+    id              int         [pk, increment]   // Primary Key
+    api_id          int         [ref: > Api.id, not null] // Foreign Key para o registro original
+    action          varchar(50) [not null]       // Tipo de ação (INSERT, UPDATE, DELETE)
+    changes         json        [not null]       // Mudanças feitas (antes e depois)
+    performed_by    int         [ref: > User.id, not null] // Foreign Key para o usuário que realizou a ação
+    performed_at    timestamp   [default: `current_timestamp`] // Data e hora da ação
+}
+
+Table AuditEndpoint {
+    id              int         [pk, increment]   // Primary Key
+    endpoint_id     int         [ref: > Endpoint.id, not null] // Foreign Key para o registro original
+    action          varchar(50) [not null]       // Tipo de ação (INSERT, UPDATE, DELETE)
+    changes         json        [not null]       // Mudanças feitas (antes e depois)
+    performed_by    int         [ref: > User.id, not null] // Foreign Key para o usuário que realizou a ação
+    performed_at    timestamp   [default: `current_timestamp`] // Data e hora da ação
+}
+
+
+
+Table AuditComponent {
+    id              int         [pk, increment]   // Primary Key
+    component_id    int         [ref: > Component.id, not null] // Foreign Key para o registro original
+    action          varchar(50) [not null]       // Tipo de ação (INSERT, UPDATE, DELETE)
+    changes         json        [not null]       // Mudanças feitas (antes e depois)
+    performed_by    int         [ref: > User.id, not null] // Foreign Key para o usuário que realizou a ação
+    performed_at    timestamp   [default: `current_timestamp`] // Data e hora da ação
+}
+
+Table AuditComponentInstance {
+    id                  int         [pk, increment]   // Primary Key
+    component_instance_id int       [ref: > ComponentInstance.id, not null] // Foreign Key para o registro original
+    action              varchar(50) [not null]       // Tipo de ação (INSERT, UPDATE, DELETE)
+    changes             json        [not null]       // Mudanças feitas (antes e depois)
+    performed_by        int         [ref: > User.id, not null] // Foreign Key para o usuário que realizou a ação
+    performed_at        timestamp   [default: `current_timestamp`] // Data e hora da ação
+}
+
+
+
