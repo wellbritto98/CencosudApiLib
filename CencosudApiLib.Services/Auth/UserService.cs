@@ -48,18 +48,6 @@ public class UserService : IUserService
             user.RegisteredAt = DateTime.UtcNow;
 
             var today = DateTime.Today;
-            var age = today.Year - user.DataNascimento.Year;
-
-            // Ajusta a idade se o aniversário ainda não ocorreu este ano
-            if (user.DataNascimento.Date > today.AddYears(-age))
-            {
-                age--;
-            }
-
-            if (age < 18)
-            {
-                return new ApiResponse { Success = false, Message = "Usuário menor de idade!" };
-            }
 
             if (!dto.AgreeTerms)
             {

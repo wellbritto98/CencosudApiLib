@@ -38,10 +38,9 @@ public class DataContext : IdentityDbContext<User>
                 EmailConfirmed = true,
                 PasswordHash = hasher.HashPassword(null, "Password@123"),
                 SecurityStamp = string.Empty,
-                Nickname = $"User {i}",
+                Name = $"User {i}",
                 RegisteredAt = DateTime.Now,
-                DataNascimento = new DateTime(1980, 1, 1),
-
+                
             };
 
             modelBuilder.Entity<User>().HasData(user);
