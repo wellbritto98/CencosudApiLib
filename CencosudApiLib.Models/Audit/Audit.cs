@@ -11,6 +11,7 @@ public class Audit : BaseEntity
 {
     [Key, Column(Order = 0)]
     public int Id { get; set; }
+    public string Type { get; set; }
     public string Entity { get; set; }
     public string Action { get; set; }
     public string Changes { get; set; }

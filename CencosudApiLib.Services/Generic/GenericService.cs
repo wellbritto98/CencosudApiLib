@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using CencosudApiLib.Repository.GenericRepository;
 using CencosudApiLib.Models.Base;
+using CencosudApiLib.Services.Interfaces;
+using CencosudApiLib.Models.Audit;
+using CencosudApiLib.Repository.Interfaces;
 
 namespace CencosudApiLib.Services.Generic
 {
@@ -31,6 +34,7 @@ namespace CencosudApiLib.Services.Generic
 
         public async Task<T> AddAsync(T entity)
         {
+            
             return await _repository.AddAsync(entity);
         }
 
@@ -39,9 +43,10 @@ namespace CencosudApiLib.Services.Generic
             return await _repository.UpdateAsync(entity);
         }
 
-        public async Task DeleteAsync(params object[] keyValues)
+        public async Task<bool> DeleteAsync(params object[] keyValues)
         {
-            await _repository.DeleteAsync(keyValues);
+            var result = await _repository.DeleteAsync(keyValues);
+            return result;
         }
     }
 }

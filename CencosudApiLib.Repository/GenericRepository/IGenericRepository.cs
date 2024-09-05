@@ -56,5 +56,5 @@ public interface IGenericRepository<T> where T : BaseEntity
     /// Exclui uma entidade do banco de dados com base nos valores de chave fornecidos.
     /// </summary>
     /// <param name="keyValues">Os valores chave da entidade a ser excluída.</param>
-    Task DeleteAsync(params object[] keyValues);
+    Task<bool> DeleteAsync(params object[] keyValues);
 }

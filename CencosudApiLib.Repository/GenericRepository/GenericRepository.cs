@@ -334,13 +334,15 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     /// Exclui uma entidade do banco de dados com base nos valores de chave fornecidos.
     /// </summary>
     /// <param name="keyValues">Os valores chave da entidade a ser excluída.</param>
-    public async Task DeleteAsync(params object[] keyValues)
+    public async Task<bool> DeleteAsync(params object[] keyValues)
     {
         var entity = await _context.Set<T>().FindAsync(keyValues);
         if (entity != null)
         {
             _context.Set<T>().Remove(entity);
-            await _context.SaveChangesAsync();
+            var delete = await _context.SaveChangesAsync();
+            return delete > 0;
         }
+        return false;
     }
 }

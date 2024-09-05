@@ -216,4 +216,39 @@ public class UserService : IUserService
             Data = new { Token = newToken, RefreshToken = refreshToken }
         };
     }
+
+    public async Task<User> GetUserByEmail(string email)
+    {
+        try
+        {
+            return await _userManager.FindByEmailAsync(email);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+    }
+
+    public async Task<User> GetUserByClaims()
+    {
+        try
+        {
+            var userIdClaim = _httpContextAccessor.HttpContext.User.FindFirst(x => x.Type == "id");
+            var userEmailClaim = _httpContextAccessor.HttpContext.User.FindFirst(ClaimTypes.Email);
+
+            if (userIdClaim == null || userEmailClaim == null)
+            {
+                return null;
+            }
+
+            var user = await _userManager.FindByIdAsync(userIdClaim.Value);
+            return user;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            return null;
+        }
+    }
 }

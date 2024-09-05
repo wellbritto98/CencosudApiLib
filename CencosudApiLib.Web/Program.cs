@@ -83,6 +83,9 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddScoped<IExampleService, ExampleService>();
 builder.Services.AddScoped<IExampleRepository, ExampleRepository>();
 
+builder.Services.AddScoped<IAuditService, AuditService>();
+builder.Services.AddScoped<IAuditRepository, AuditRepository>();
+
 //////////////////////////////////////////
 /////////////////////////////////////////
 

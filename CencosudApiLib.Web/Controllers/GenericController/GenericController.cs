@@ -1,7 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.Security.Claims;
 using AutoMapper;
+using CencosudApiLib.Models.Audit;
 using CencosudApiLib.Models.Base;
 using CencosudApiLib.Services.Generic;
+using CencosudApiLib.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -22,6 +25,8 @@ namespace CencosudApiLib.Web.Controllers.GenericController;
 /// <typeparam name="T4">DTO de atualização da entidade.</typeparam>
 public class GenericController<T1, T2, T3, T4> : ControllerBase where T1 : BaseEntity where T2 : class where T3 : class where T4 : class
 {
+    private readonly IAuditService _auditService;
+    private readonly IUserService _userService;
     protected readonly IGenericService<T1> _service;
     protected readonly IMapper _mapper;
     protected readonly IHttpContextAccessor _httpContextAccessor;
@@ -32,8 +37,10 @@ public class GenericController<T1, T2, T3, T4> : ControllerBase where T1 : BaseE
     /// <param name="service">Serviço genérico para operações CRUD.</param>
     /// <param name="mapper">Mapper para conversão de DTOs.</param>
     /// <param name="httpContextAccessor">Acessor de contexto HTTP.</param>
-    public GenericController(IGenericService<T1> service, IMapper mapper, IHttpContextAccessor httpContextAccessor)
+    public GenericController(IGenericService<T1> service, IMapper mapper, IHttpContextAccessor httpContextAccessor, IAuditService auditService, IUserService userService)
     {
+        _auditService = auditService;
+        _userService = userService;
         _service = service;
         _mapper = mapper;
         _httpContextAccessor = httpContextAccessor;
@@ -152,6 +159,20 @@ public class GenericController<T1, T2, T3, T4> : ControllerBase where T1 : BaseE
         {
             var entity = _mapper.Map<T1>(dto);
             var createdEntity = await _service.AddAsync(entity);
+            if(createdEntity!=null)
+            {
+                
+                var user = await _userService.GetUserByClaims();
+                Audit audit = new Audit
+                {
+                    Type = entity.GetType().Name,
+                    Entity = entity.ToString(),
+                    Action = "Insert",
+                    Changes = entity.ToString(),
+                    Performed_By = user.Id.ToString()
+                };
+                await _auditService.AddAsync(audit);
+            }
             return Ok(_mapper.Map<T2>(createdEntity));
         }
         catch (Exception ex)
@@ -189,12 +210,29 @@ public class GenericController<T1, T2, T3, T4> : ControllerBase where T1 : BaseE
     {
         try
         {
+
             var dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(id);
             object[] keyValues = dict.Values.ToArray();
             var entity = await _service.GetByIdAsync(keyValues);
 
+
             var mappedEntity = _mapper.Map(dto, entity);
-            await _service.UpdateAsync(mappedEntity);
+            var entityBeforeUpdate = _mapper.Map<T1>(entity);
+            var updatedEntity = await _service.UpdateAsync(mappedEntity);
+            if(updatedEntity!=null)
+            {
+                var user = await _userService.GetUserByClaims();
+                Audit audit = new Audit
+                {
+                    Type = entity.GetType().Name,
+                    Entity = entityBeforeUpdate.ToString(),
+                    Action = "Update",
+                    Changes = entity.ToString(),
+                    Performed_By = user.Id.ToString()
+                };
+                await _auditService.AddAsync(audit);
+            }
+
 
             return Ok("Atualizado com sucesso");
         }
@@ -234,8 +272,20 @@ public class GenericController<T1, T2, T3, T4> : ControllerBase where T1 : BaseE
         {
             var dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(id);
             object[] keyValues = dict.Values.ToArray();
-
-            await _service.DeleteAsync(keyValues);
+            var entity = await _service.GetByIdAsync(keyValues);
+            var result = await _service.DeleteAsync(keyValues);
+            if(result){
+                var user = await _userService.GetUserByClaims();
+                Audit audit = new Audit
+                {
+                    Type = entity.GetType().Name,
+                    Entity = entity.ToString(),
+                    Action = "Delete",
+                    Changes = "Delete",
+                    Performed_By = user.Id.ToString()
+                };
+                await _auditService.AddAsync(audit);
+            }
             return Ok("Deletado com sucesso");
         }
         catch (Exception ex)
