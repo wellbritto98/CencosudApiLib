@@ -4,22 +4,43 @@ Table User {
     id              int        [pk, increment]   // Primary Key
     name            varchar(255) [not null]       // Nome do usuário
     email           varchar(255) [not null, unique] // E-mail do usuário
-    password        varchar(255) [not null]      
-    created_at      timestamp   [default: `current_timestamp`] 
-    updated_at      timestamp   [default: `current_timestamp`] 
+    password        varchar(255) [not null]       
     is_deleted      boolean     [default: false, not null] 
 }
 
+Table Projeto {
+    id              int         [pk, increment]   // Primary Key
+    name            varchar(255) [not null, unique] // Nome do projeto
+    description     text        
+    is_deleted      boolean     [default: false, not null] 
+    deleted_by      int         [ref: > User.id] // Foreign Key para User
+    deleted_at      timestamp
+    created_by      int         [ref: > User.id, not null] // Foreign Key para User
+    created_at      timestamp   [default: `current_timestamp`]
+    updated_by      int         [ref: > User.id] // Foreign Key para User
+    updated_at      timestamp
+}
+
+Table ApiInstance {
+    api_id          int         [pk, ref: > Api.id, not null] // Foreign Key para Api
+    projeto_id      int         [pk, ref: > Projeto.id, not null] // Foreign Key para Projeto      
+    is_deleted      boolean     [default: false, not null] 
+}
 
 Table Api {
     id              int         [pk, increment]   // Primary Key
+    responsavel_tecnico_id int [ref: > User.id, not null] // Foreign Key para User
     name            varchar(255) [not null, unique] // Nome da API
     description     text        
     baseUrl         varchar(255) [not null]     
-    version         varchar(50)  
-    created_at      timestamp   [default: `current_timestamp`] 
-    updated_at      timestamp   [default: `current_timestamp`] 
-    is_deleted      boolean     [default: false, not null] 
+    version         varchar(50)   
+    is_deleted      boolean     [default: false, not null]
+    deleted_by      int         [ref: > User.id] // Foreign Key para User
+    deleted_at      timestamp
+    created_by     int         [ref: > User.id, not null] // Foreign Key para User
+    created_at      timestamp   [default: `current_timestamp`]
+    updated_by      int         [ref: > User.id] // Foreign Key para User
+    updated_at      timestamp 
 }
 
 
@@ -28,29 +49,34 @@ Table Endpoint {
     api_id          int         [ref: > Api.id, not null] // Foreign Key para a API
     path            varchar(255) [not null]      
     method          varchar(10)  [not null]       
-    description     text        
-    created_at      timestamp   [default: `current_timestamp`] 
-    updated_at      timestamp   [default: `current_timestamp`] 
+    description     text         
     is_deleted      boolean     [default: false, not null] 
+    deleted_by      int         [ref: > User.id] // Foreign Key para User
+    deleted_at      timestamp
+    created_by     int         [ref: > User.id, not null] // Foreign Key para User
+    created_at      timestamp   [default: `current_timestamp`]
+    updated_by      int         [ref: > User.id] // Foreign Key para User
+    updated_at      timestamp
 }
 
 Table Component {
     id              int         [pk, increment]   // Primary Key
     name            varchar(255) [not null, unique] // Nome do componente
     type            ComponentType [not null]      // Tipo de componente baseado no enum ComponentType
-    description     text        
-    created_at      timestamp   [default: `current_timestamp`] 
-    updated_at      timestamp   [default: `current_timestamp`] 
-    is_deleted      boolean     [default: false, not null] 
+    description     text         
+    is_deleted      boolean     [default: false, not null]
+    deleted_by      int         [ref: > User.id] // Foreign Key para User
+    deleted_at      timestamp
+    created_by     int         [ref: > User.id, not null] // Foreign Key para User
+    created_at      timestamp   [default: `current_timestamp`]
+    updated_by      int         [ref: > User.id] // Foreign Key para User
+    updated_at      timestamp
+
 }
 
 Table ComponentInstance {
-    id              int         [pk, increment]   // Primary Key
-    endpoint_id     int         [ref: > Endpoint.id, not null] // Foreign Key para Endpoint
-    component_id    int         [ref: > Component.id, not null] // Foreign Key para Component
-    configuration   json        
-    created_at      timestamp   [default: `current_timestamp`] 
-    updated_at      timestamp   [default: `current_timestamp`] 
+    endpoint_id     int         [pk, ref: > Endpoint.id, not null] // Foreign Key para Endpoint
+    component_id    int         [pk, ref: > Component.id, not null] // Foreign Key para Component 
     is_deleted      boolean     [default: false, not null] 
 }
 
@@ -69,43 +95,12 @@ Enum ComponentType {
 
 //TABELAS DE AUDITORIA 
 
-Table AuditApi {
+Table Audit {
     id              int         [pk, increment]   // Primary Key
-    api_id          int         [ref: > Api.id, not null] // Foreign Key para o registro original
-    action          varchar(50) [not null]       // Tipo de ação (INSERT, UPDATE, DELETE)
-    changes         json        [not null]       // Mudanças feitas (antes e depois)
-    performed_by    int         [ref: > User.id, not null] // Foreign Key para o usuário que realizou a ação
-    performed_at    timestamp   [default: `current_timestamp`] // Data e hora da ação
+    type            varchar(255) [not null]       // Tipo de ação
+    entity          varchar(255) [not null]       // Entidade afetada
+    action          varchar(255) [not null]       // Ação realizada
+    changes         json        
+    performed_by    int         [ref: > User.id, not null] // Foreign Key para User
+    performed_at    timestamp   [default: `current_timestamp`] 
 }
-
-Table AuditEndpoint {
-    id              int         [pk, increment]   // Primary Key
-    endpoint_id     int         [ref: > Endpoint.id, not null] // Foreign Key para o registro original
-    action          varchar(50) [not null]       // Tipo de ação (INSERT, UPDATE, DELETE)
-    changes         json        [not null]       // Mudanças feitas (antes e depois)
-    performed_by    int         [ref: > User.id, not null] // Foreign Key para o usuário que realizou a ação
-    performed_at    timestamp   [default: `current_timestamp`] // Data e hora da ação
-}
-
-
-
-Table AuditComponent {
-    id              int         [pk, increment]   // Primary Key
-    component_id    int         [ref: > Component.id, not null] // Foreign Key para o registro original
-    action          varchar(50) [not null]       // Tipo de ação (INSERT, UPDATE, DELETE)
-    changes         json        [not null]       // Mudanças feitas (antes e depois)
-    performed_by    int         [ref: > User.id, not null] // Foreign Key para o usuário que realizou a ação
-    performed_at    timestamp   [default: `current_timestamp`] // Data e hora da ação
-}
-
-Table AuditComponentInstance {
-    id                  int         [pk, increment]   // Primary Key
-    component_instance_id int       [ref: > ComponentInstance.id, not null] // Foreign Key para o registro original
-    action              varchar(50) [not null]       // Tipo de ação (INSERT, UPDATE, DELETE)
-    changes             json        [not null]       // Mudanças feitas (antes e depois)
-    performed_by        int         [ref: > User.id, not null] // Foreign Key para o usuário que realizou a ação
-    performed_at        timestamp   [default: `current_timestamp`] // Data e hora da ação
-}
-
-
-

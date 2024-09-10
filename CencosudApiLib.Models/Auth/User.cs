@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
+
 namespace CencosudApiLib.Models.Auth;
 
 public class User : IdentityUser
@@ -12,5 +13,6 @@ public class User : IdentityUser
     public DateTime TokenExpiredAt { get; set; }
     public DateTime TokenCreatedAt { get; set; }
     public bool IsDeleted { get; set; } = false;
+    public virtual ICollection<Audit> Audits { get; set; }
 
 }

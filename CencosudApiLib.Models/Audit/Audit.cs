@@ -5,7 +5,7 @@ using System.Text.Json.Nodes;
 using CencosudApiLib.Models.Auth;
 using CencosudApiLib.Models.Base;
 
-namespace CencosudApiLib.Models.Audit;
+namespace CencosudApiLib.Models;
 
 public class Audit : BaseEntity
 {
