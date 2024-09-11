@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CencosudApiLib.Models;
 
-public class ExampleEntity : BaseEntity
+public class Example2Entity : BaseEntity
 {
     [Key, Column(Order = 0)]
     public int Id { get; set; }
