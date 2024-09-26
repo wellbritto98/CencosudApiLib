@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations.Schema;
 using System.Security.Claims;
 using AutoMapper;
-using CencosudApiLib.Models.Audit;
+using CencosudApiLib.Models;
 using CencosudApiLib.Models.Base;
 using CencosudApiLib.Services.Generic;
 using CencosudApiLib.Services.Interfaces;
@@ -158,6 +158,7 @@ public class GenericController<T1, T2, T3, T4> : ControllerBase where T1 : BaseE
         try
         {
             var entity = _mapper.Map<T1>(dto);
+            
             var createdEntity = await _service.AddAsync(entity);
             if(createdEntity!=null)
             {
@@ -166,7 +167,7 @@ public class GenericController<T1, T2, T3, T4> : ControllerBase where T1 : BaseE
                 Audit audit = new Audit
                 {
                     Type = entity.GetType().Name,
-                    Entity = entity.ToString(),
+                    Entity = GetEntityIdIfHas(entity),
                     Action = "Insert",
                     Changes = entity.ToString(),
                     Performed_By = user.Id.ToString()
@@ -179,6 +180,19 @@ public class GenericController<T1, T2, T3, T4> : ControllerBase where T1 : BaseE
         {
             return BadRequest(ex.Message);
         }
+    }
+
+    private int GetEntityIdIfHas(T1 entity)
+    {
+        var entityProperties = entity.GetType().GetProperties();
+        foreach (var property in entityProperties)
+        {
+            if (property.Name == "Id")
+            {
+                return (int)property.GetValue(entity);
+            }
+        }
+        return 0;
     }
 
     /// <summary>
@@ -225,7 +239,7 @@ public class GenericController<T1, T2, T3, T4> : ControllerBase where T1 : BaseE
                 Audit audit = new Audit
                 {
                     Type = entity.GetType().Name,
-                    Entity = entityBeforeUpdate.ToString(),
+                    Entity = GetEntityIdIfHas(entityBeforeUpdate),
                     Action = "Update",
                     Changes = entity.ToString(),
                     Performed_By = user.Id.ToString()
@@ -279,7 +293,7 @@ public class GenericController<T1, T2, T3, T4> : ControllerBase where T1 : BaseE
                 Audit audit = new Audit
                 {
                     Type = entity.GetType().Name,
-                    Entity = entity.ToString(),
+                    Entity = GetEntityIdIfHas(entity),
                     Action = "Delete",
                     Changes = "Delete",
                     Performed_By = user.Id.ToString()

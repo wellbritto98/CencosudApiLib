@@ -1,5 +1,4 @@
 ﻿using CencosudApiLib.Models;
-using CencosudApiLib.Models.Audit;
 using CencosudApiLib.Models.Auth;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -11,6 +10,7 @@ namespace CencosudApiLib.Data;
 public class DataContext : IdentityDbContext<User>
 {
     public DbSet<Audit> Audits { get; set; }
+    public DbSet<ExampleEntity> Examples { get; set; }
 
     
 

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using CencosudApiLib.Repository.GenericRepository;
 using CencosudApiLib.Models.Base;
 using CencosudApiLib.Services.Interfaces;
-using CencosudApiLib.Models.Audit;
+
 using CencosudApiLib.Repository.Interfaces;
 
 namespace CencosudApiLib.Services.Generic

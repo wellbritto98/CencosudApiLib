@@ -10,4 +10,5 @@ public class ExampleRepository : GenericRepository<ExampleEntity>, IExampleRepos
     public ExampleRepository(DataContext context) : base(context)
     {
     }
+    
 }
