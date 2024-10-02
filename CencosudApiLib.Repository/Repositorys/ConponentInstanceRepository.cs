@@ -5,9 +5,9 @@ using CencosudApiLib.Repository.Interfaces;
 
 namespace CencosudApiLib.Repository.Repositorys;
 
-public class ExampleRepository : GenericRepository<ExampleEntity>, IExampleRepository
+public class ComponentInstanceRepository : GenericRepository<ComponentInstance>, IComponentInstanceRepository
 {
-    public ExampleRepository(DataContext context) : base(context)
+    public ComponentInstanceRepository(DataContext context) : base(context)
     {
     }
 }
