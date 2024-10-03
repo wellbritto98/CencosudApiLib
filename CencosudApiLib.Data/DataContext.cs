@@ -9,7 +9,7 @@ namespace CencosudApiLib.Data;
 
 public class DataContext : IdentityDbContext<User>
 {
-    public DbSet<ExampleEntity> Examples { get; set; }
+    public DbSet<ComponentInstance> ComponentInstance { get; set; }
     
 
     public DataContext(DbContextOptions<DataContext> options) : base(options)
@@ -55,15 +55,6 @@ public class DataContext : IdentityDbContext<User>
                 }
             );
 
-            var example = new ExampleEntity
-            {
-                Id = i,
-                Name = $"Example{i}",
-                Nickname = $"Example{i}Nickname",
-                IsConfirmed = true
-            };
-
-            modelBuilder.Entity<ExampleEntity>().HasData(example);
         }
     }
 }
