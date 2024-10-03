@@ -3,7 +3,7 @@ using CencosudApiLib.Repository.GenericRepository;
 
 namespace CencosudApiLib.Repository.Interfaces;
 
-public interface IExampleRepository : IGenericRepository<ExampleEntity>
+public interface IApiRepository : IGenericRepository<Api>
 {
 
 }
