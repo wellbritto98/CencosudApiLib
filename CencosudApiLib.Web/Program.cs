@@ -82,6 +82,8 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 
 builder.Services.AddScoped<IApiService, ApiService>();
 builder.Services.AddScoped<IApiRepository, ApiRepository>();
+builder.Services.AddScoped<IComponentInstanceService, ComponentInstanceService>();
+builder.Services.AddScoped<IComponentInstanceRepository, ComponentInstanceRepository>();
 
 //////////////////////////////////////////
 /////////////////////////////////////////
