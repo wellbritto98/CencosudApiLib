@@ -1,7 +1,7 @@
 //Modelagem Cencosud Api Lib - Aplicação de biblioteca de apis e dependencias de componentes entre endpoints
 
 Table User {
-    id              int        [pk, increment]   // Primary Key
+    id              GUID        [pk, increment]   // Primary Key
     name            varchar(255) [not null]       // Nome do usuário
     email           varchar(255) [not null, unique] // E-mail do usuário
     password        varchar(255) [not null]      
@@ -10,6 +10,24 @@ Table User {
     is_deleted      boolean     [default: false, not null] 
 }
 
+Table Project {
+    id              int        [pk, increment]   // Primary Key
+    name            varchar(255) [not null]       // Nome do projeto
+    description     text
+    responsavelTecnico GUID     [ref: > User.id, not null] // Foreign Key para o projeto    // Responsável técnico do projeto
+    created_at      timestamp   [default: `current_timestamp`]
+    updated_at      timestamp   [default: `current_timestamp`]
+    is_deleted      boolean     [default: false, not null]
+}
+
+Table ApiInstance {
+    id              int         [pk, increment]   // Primary Key
+    api_id          int         [ref: > Api.id, not null] // Foreign Key para a API
+    project_id     int          [ref: > Project.id, not null] // Foreign Key para o endpoint
+    created_at      timestamp   [default: `current_timestamp`] 
+    updated_at      timestamp   [default: `current_timestamp`] 
+    is_deleted      boolean     [default: false, not null] 
+}
 
 Table Api {
     id              int         [pk, increment]   // Primary Key
@@ -65,47 +83,4 @@ Enum ComponentType {
     Configuration
     Response
 }
-
-
-//TABELAS DE AUDITORIA 
-
-Table AuditApi {
-    id              int         [pk, increment]   // Primary Key
-    api_id          int         [ref: > Api.id, not null] // Foreign Key para o registro original
-    action          varchar(50) [not null]       // Tipo de ação (INSERT, UPDATE, DELETE)
-    changes         json        [not null]       // Mudanças feitas (antes e depois)
-    performed_by    int         [ref: > User.id, not null] // Foreign Key para o usuário que realizou a ação
-    performed_at    timestamp   [default: `current_timestamp`] // Data e hora da ação
-}
-
-Table AuditEndpoint {
-    id              int         [pk, increment]   // Primary Key
-    endpoint_id     int         [ref: > Endpoint.id, not null] // Foreign Key para o registro original
-    action          varchar(50) [not null]       // Tipo de ação (INSERT, UPDATE, DELETE)
-    changes         json        [not null]       // Mudanças feitas (antes e depois)
-    performed_by    int         [ref: > User.id, not null] // Foreign Key para o usuário que realizou a ação
-    performed_at    timestamp   [default: `current_timestamp`] // Data e hora da ação
-}
-
-
-
-Table AuditComponent {
-    id              int         [pk, increment]   // Primary Key
-    component_id    int         [ref: > Component.id, not null] // Foreign Key para o registro original
-    action          varchar(50) [not null]       // Tipo de ação (INSERT, UPDATE, DELETE)
-    changes         json        [not null]       // Mudanças feitas (antes e depois)
-    performed_by    int         [ref: > User.id, not null] // Foreign Key para o usuário que realizou a ação
-    performed_at    timestamp   [default: `current_timestamp`] // Data e hora da ação
-}
-
-Table AuditComponentInstance {
-    id                  int         [pk, increment]   // Primary Key
-    component_instance_id int       [ref: > ComponentInstance.id, not null] // Foreign Key para o registro original
-    action              varchar(50) [not null]       // Tipo de ação (INSERT, UPDATE, DELETE)
-    changes             json        [not null]       // Mudanças feitas (antes e depois)
-    performed_by        int         [ref: > User.id, not null] // Foreign Key para o usuário que realizou a ação
-    performed_at        timestamp   [default: `current_timestamp`] // Data e hora da ação
-}
-
-
 
