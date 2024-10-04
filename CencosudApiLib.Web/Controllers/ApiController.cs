@@ -7,9 +7,9 @@ using CencosudApiLib.Data.Dtos;
 
 namespace CencosudApiLib.Web.Controllers;
 
-public class ExampleController : GenericController<ExampleEntity, InsertExampleDto, ReadExampleDto, UpdateExampleDto>
+public class ApiController : GenericController<Api, InsertApiDto, ReadApiDto, UpdateApiDto>
 {
-    public ExampleController(IExampleService service, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(service, mapper, httpContextAccessor)
+    public ApiController(IApiService service, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(service, mapper, httpContextAccessor)
     {
 
     }

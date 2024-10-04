@@ -3,7 +3,7 @@ using CencosudApiLib.Services.Generic;
 
 namespace CencosudApiLib.Services.Interfaces
 {
-    public interface IExampleService : IGenericService<ExampleEntity>
+    public interface IApiService : IGenericService<Api>
     {
 
     }
