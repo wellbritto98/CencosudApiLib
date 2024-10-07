@@ -1,5 +1,6 @@
 ﻿using CencosudApiLib.Models;
 using CencosudApiLib.Models.Auth;
+using CencosudProjectLib.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -10,8 +11,9 @@ namespace CencosudApiLib.Data;
 public class DataContext : IdentityDbContext<User>
 {
     public DbSet<Api> Apis { get; set; }
+    public DbSet<ApiInstance> ApiInstances { get; set; }
     public DbSet<ComponentInstance> ComponentInstance { get; set; }
-    
+    public DbSet<Project> Projects { get; set; }
 
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {

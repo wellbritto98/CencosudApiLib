@@ -80,6 +80,10 @@ builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("Emai
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 
+builder.Services.AddScoped<IProjectService, ProjectService>();
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IApiInstanceService, ApiInstanceService>();
+builder.Services.AddScoped<IApiInstanceRepository, ApiInstanceRepository>();
 builder.Services.AddScoped<IApiService, ApiService>();
 builder.Services.AddScoped<IApiRepository, ApiRepository>();
 builder.Services.AddScoped<IComponentInstanceService, ComponentInstanceService>();
