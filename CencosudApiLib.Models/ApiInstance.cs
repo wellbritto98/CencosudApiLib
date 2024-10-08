@@ -11,13 +11,13 @@ public class ApiInstance : BaseEntity
 {
 
     [Column(Order = 0)]
-    [ForeignKey("ProjectId")]
-    public string ProjectId {  get; set; }
+    [ForeignKey("Project")]
+    public int ProjectId {  get; set; }
     public virtual Project Project { get; set; }
 
     [Column(Order = 1)]
-    [ForeignKey("ApiId")]
-    public string ApiId {  get; set; }
+    [ForeignKey("Api")]
+    public int ApiId {  get; set; }
     public virtual Api Api { get; set; }
 
 }

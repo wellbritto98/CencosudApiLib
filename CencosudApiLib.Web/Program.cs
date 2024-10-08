@@ -68,7 +68,16 @@ builder.Services.AddIdentityApiEndpoints<User>()
 builder.Services.AddHttpClient();
 builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
 builder.Services.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
-
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder
+            .AllowAnyOrigin() // Permite qualquer origem
+            .AllowAnyMethod() // Permite qualquer método (GET, POST, PUT, DELETE, etc.)
+            .AllowAnyHeader(); // Permite qualquer cabeçalho
+    });
+});
 
 ///////////////////////////////////////////
 //Registro de Services e Repositorys///////
@@ -115,6 +124,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseCors("AllowAll");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapIdentityApi<User>();

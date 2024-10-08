@@ -3,6 +3,7 @@ using System;
 using CencosudApiLib.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace CencosudApiLib.Web.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20241007195144_removeresponsaveltecnico")]
+    partial class removeresponsaveltecnico
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,42 +48,22 @@ namespace CencosudApiLib.Web.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<string>("ResponsavelTecnico")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
                     b.Property<string>("Version")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
-                    b.ToTable("Apis");
+                    b.HasIndex("UserId");
 
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            BaseUrl = "https://auth.api.com",
-                            Description = "API for user authentication",
-                            IsDeleted = false,
-                            Name = "Authentication API",
-                            Version = "v1.0"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            BaseUrl = "https://payment.api.com",
-                            Description = "API for payment processing",
-                            IsDeleted = false,
-                            Name = "Payment API",
-                            Version = "v2.1"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            BaseUrl = "https://notify.api.com",
-                            Description = "API for sending notifications",
-                            IsDeleted = false,
-                            Name = "Notification API",
-                            Version = "v1.3"
-                        });
+                    b.ToTable("Apis");
                 });
 
             modelBuilder.Entity("CencosudApiLib.Models.ApiInstance", b =>
@@ -101,38 +84,6 @@ namespace CencosudApiLib.Web.Migrations
                     b.HasIndex("ApiId");
 
                     b.ToTable("ApiInstances");
-
-                    b.HasData(
-                        new
-                        {
-                            ProjectId = 1,
-                            ApiId = 1,
-                            IsDeleted = false
-                        },
-                        new
-                        {
-                            ProjectId = 1,
-                            ApiId = 2,
-                            IsDeleted = false
-                        },
-                        new
-                        {
-                            ProjectId = 2,
-                            ApiId = 1,
-                            IsDeleted = false
-                        },
-                        new
-                        {
-                            ProjectId = 2,
-                            ApiId = 3,
-                            IsDeleted = false
-                        },
-                        new
-                        {
-                            ProjectId = 3,
-                            ApiId = 3,
-                            IsDeleted = false
-                        });
                 });
 
             modelBuilder.Entity("CencosudApiLib.Models.Auth.User", b =>
@@ -227,9 +178,9 @@ namespace CencosudApiLib.Web.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "d135cbf1-ecca-4b33-9031-f6af2df6c59f",
+                            Id = "33c4e333-c141-48eb-81d8-a98cd61880a0",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "5895e034-37c2-4b76-a58e-24690ffacb45",
+                            ConcurrencyStamp = "9686dffa-879a-422a-b0c0-c7156702b33f",
                             Email = "user1@example.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -237,10 +188,10 @@ namespace CencosudApiLib.Web.Migrations
                             Name = "User 1",
                             NormalizedEmail = "USER1@EXAMPLE.COM",
                             NormalizedUserName = "USER1",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMe4AEC8JSNw/o/eDPNx38/6Y0Zrx07PYtDmYs6BXvZ73U3WxA19OqCHzfTooxw9hw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEGqyFKMmxMr/3BB6K3c3Qir//qCyUDTkJc4cVQdLRZ2gyJjSt6MBQfH4lnZ9eTquhA==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "",
-                            RegisteredAt = new DateTime(2024, 10, 7, 16, 57, 51, 36, DateTimeKind.Local).AddTicks(2233),
+                            RegisteredAt = new DateTime(2024, 10, 7, 16, 51, 42, 926, DateTimeKind.Local).AddTicks(6351),
                             SecurityStamp = "",
                             TokenCreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TokenExpiredAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -249,9 +200,9 @@ namespace CencosudApiLib.Web.Migrations
                         },
                         new
                         {
-                            Id = "1feed60c-34bc-4d16-81fe-980fc25f408f",
+                            Id = "5ae5719b-cab5-427e-9fa3-469e1dc41035",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "c5a20853-076b-4ed9-999b-c9bc4e78b0ca",
+                            ConcurrencyStamp = "73fdd49a-172a-4f0c-aec5-eb1a9daf366f",
                             Email = "user2@example.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -259,10 +210,10 @@ namespace CencosudApiLib.Web.Migrations
                             Name = "User 2",
                             NormalizedEmail = "USER2@EXAMPLE.COM",
                             NormalizedUserName = "USER2",
-                            PasswordHash = "AQAAAAIAAYagAAAAEGApVl613z3De+0RrXKvkycac2K5HGi8EOsHgrTCHuJmMeDC1Z9UIsVrHAYA1zOVbg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEPRebsZBeQ0zrCsXKpg+fI7+33Jzj0UKLOv5VBL6cJi2eoCYLfVMXrrFfgiaabQXzw==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "",
-                            RegisteredAt = new DateTime(2024, 10, 7, 16, 57, 51, 126, DateTimeKind.Local).AddTicks(7749),
+                            RegisteredAt = new DateTime(2024, 10, 7, 16, 51, 42, 993, DateTimeKind.Local).AddTicks(1623),
                             SecurityStamp = "",
                             TokenCreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TokenExpiredAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -271,9 +222,9 @@ namespace CencosudApiLib.Web.Migrations
                         },
                         new
                         {
-                            Id = "4774afae-a7fa-47cd-8dd9-19b0e0107fa8",
+                            Id = "c2328c59-a5db-4756-8800-512bf17ab76a",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9685e8da-a4e1-4233-910b-20de878f2e39",
+                            ConcurrencyStamp = "9b8ee84a-5f66-484f-850c-a45ea571936f",
                             Email = "user3@example.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -281,10 +232,10 @@ namespace CencosudApiLib.Web.Migrations
                             Name = "User 3",
                             NormalizedEmail = "USER3@EXAMPLE.COM",
                             NormalizedUserName = "USER3",
-                            PasswordHash = "AQAAAAIAAYagAAAAEC1UdwZ39Htck0y7droKfvho5IdvG93fcIs6oigNC6nls5OGC4Ri8zT+tJtJC60oSA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEM12iCDW35rTfla+NfRjMwwsS37plWc3iieRXh0BJpTck74B/JRXFwFPOo1Dj6N0QA==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "",
-                            RegisteredAt = new DateTime(2024, 10, 7, 16, 57, 51, 204, DateTimeKind.Local).AddTicks(1365),
+                            RegisteredAt = new DateTime(2024, 10, 7, 16, 51, 43, 63, DateTimeKind.Local).AddTicks(6962),
                             SecurityStamp = "",
                             TokenCreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TokenExpiredAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -293,9 +244,9 @@ namespace CencosudApiLib.Web.Migrations
                         },
                         new
                         {
-                            Id = "3c76221e-d810-4637-ba3b-2a932bbd4ac7",
+                            Id = "0483e647-701b-4930-a3a6-8cca99d8ed3c",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "17a4434d-8798-4be1-9837-8ef3823e477f",
+                            ConcurrencyStamp = "fd61cafb-7ea9-4258-a7ff-3cd47939a513",
                             Email = "user4@example.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -303,10 +254,10 @@ namespace CencosudApiLib.Web.Migrations
                             Name = "User 4",
                             NormalizedEmail = "USER4@EXAMPLE.COM",
                             NormalizedUserName = "USER4",
-                            PasswordHash = "AQAAAAIAAYagAAAAEHANycTip7zZc7gdMrt6UbcRAn/kAIFypY6/2mReTCLfh4imm6phCcgQ8j6D7D8ApA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAENu5QUQirZuLVk28nPp/6E4aYIqGjuCNn+QQEnjvUeIi+gambIvNQDLEG4TSUHoNBg==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "",
-                            RegisteredAt = new DateTime(2024, 10, 7, 16, 57, 51, 287, DateTimeKind.Local).AddTicks(852),
+                            RegisteredAt = new DateTime(2024, 10, 7, 16, 51, 43, 148, DateTimeKind.Local).AddTicks(5669),
                             SecurityStamp = "",
                             TokenCreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TokenExpiredAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -315,9 +266,9 @@ namespace CencosudApiLib.Web.Migrations
                         },
                         new
                         {
-                            Id = "974c3b43-38f2-4c13-b232-41f11b6c4e6d",
+                            Id = "da20ee8d-2d64-4b94-9eb4-f0aadefd8d9e",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "3ec4e2a3-16bd-4ed2-a543-2b5a98016ad7",
+                            ConcurrencyStamp = "5afc995f-a4e2-43b8-be68-f246a0e4394d",
                             Email = "user5@example.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -325,10 +276,10 @@ namespace CencosudApiLib.Web.Migrations
                             Name = "User 5",
                             NormalizedEmail = "USER5@EXAMPLE.COM",
                             NormalizedUserName = "USER5",
-                            PasswordHash = "AQAAAAIAAYagAAAAEP9uvQ5jhZNaw4KZbDa2cIj1LTht7+U2qi8b43d67s/G5bLmJ9sUN7iA5cGlJSBvqQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAED1oBwfgNojwz+whPnFxQoYjDB31jbDB8RxtKMH+6GsOf9LDJy3nAqGpr16Z4+vIng==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "",
-                            RegisteredAt = new DateTime(2024, 10, 7, 16, 57, 51, 364, DateTimeKind.Local).AddTicks(524),
+                            RegisteredAt = new DateTime(2024, 10, 7, 16, 51, 43, 215, DateTimeKind.Local).AddTicks(2810),
                             SecurityStamp = "",
                             TokenCreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TokenExpiredAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -337,9 +288,9 @@ namespace CencosudApiLib.Web.Migrations
                         },
                         new
                         {
-                            Id = "569b4aac-8008-4d64-8e46-4eea60daca90",
+                            Id = "542e2ebd-0d5a-4211-bf9c-550057de0fad",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "0c5e8160-ce88-46c6-be48-93c770ed8b09",
+                            ConcurrencyStamp = "ee72b6f9-ccb5-44f0-b43e-229bed3b1a19",
                             Email = "user6@example.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -347,10 +298,10 @@ namespace CencosudApiLib.Web.Migrations
                             Name = "User 6",
                             NormalizedEmail = "USER6@EXAMPLE.COM",
                             NormalizedUserName = "USER6",
-                            PasswordHash = "AQAAAAIAAYagAAAAEFDhJ7MvMiqzaqS4LLl0+VHvGTEl6JvUmXHI90QFpX039B6MVtt6qetajM3nc/eHmw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEE+wr49EJfGXgj4Fsqj7KYmvHqNZ1Hm7Gexgn2DNDn+19p2umLLlspzeoac53yOTJw==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "",
-                            RegisteredAt = new DateTime(2024, 10, 7, 16, 57, 51, 427, DateTimeKind.Local).AddTicks(8449),
+                            RegisteredAt = new DateTime(2024, 10, 7, 16, 51, 43, 288, DateTimeKind.Local).AddTicks(6169),
                             SecurityStamp = "",
                             TokenCreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TokenExpiredAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -359,9 +310,9 @@ namespace CencosudApiLib.Web.Migrations
                         },
                         new
                         {
-                            Id = "8bb17cea-f1a4-4278-b2d0-932f3af15425",
+                            Id = "e8e408b5-86b5-424f-b8df-ca946ba83970",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "81baa555-3e4f-4a98-afce-1cc6d48dfd85",
+                            ConcurrencyStamp = "75c3c1ed-4b2d-4044-875d-dd369792b3ec",
                             Email = "user7@example.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -369,10 +320,10 @@ namespace CencosudApiLib.Web.Migrations
                             Name = "User 7",
                             NormalizedEmail = "USER7@EXAMPLE.COM",
                             NormalizedUserName = "USER7",
-                            PasswordHash = "AQAAAAIAAYagAAAAEKBD06phzs5Xu4AkbjzvSEJGXLsD7KTn6lTL3s29HVm4N4Fsbq1XYLB9EAJ9r31ggw==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEDxd2SyVILB99QU1Kq57ypDKJ4pyvtSooIHWMMMw4HF/FODQqEs2lHqx3Z0MDS+aBA==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "",
-                            RegisteredAt = new DateTime(2024, 10, 7, 16, 57, 51, 490, DateTimeKind.Local).AddTicks(9022),
+                            RegisteredAt = new DateTime(2024, 10, 7, 16, 51, 43, 352, DateTimeKind.Local).AddTicks(8723),
                             SecurityStamp = "",
                             TokenCreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TokenExpiredAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -381,9 +332,9 @@ namespace CencosudApiLib.Web.Migrations
                         },
                         new
                         {
-                            Id = "fcbce295-a7cf-44cb-b73f-b73aa240bfa6",
+                            Id = "43207aee-2889-4ca4-a919-dbb663f9b209",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "eb9a85c3-459b-4d67-a0c1-1a9f72896017",
+                            ConcurrencyStamp = "b3dab08a-ff84-42e1-8a94-48d93984d5a3",
                             Email = "user8@example.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -391,10 +342,10 @@ namespace CencosudApiLib.Web.Migrations
                             Name = "User 8",
                             NormalizedEmail = "USER8@EXAMPLE.COM",
                             NormalizedUserName = "USER8",
-                            PasswordHash = "AQAAAAIAAYagAAAAEMfwS/zeZQc3rZsJ/aEil+uciGipK/rDzNSJFkTQoAkpqN+w5gxIK4Uyw44B96vjVA==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEFd2mWYvh2a+v4zFMT35x52sCvo3xubGT2gUUwmD3q9xDIPBp3LSMmqa4la1nPQ0VQ==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "",
-                            RegisteredAt = new DateTime(2024, 10, 7, 16, 57, 51, 551, DateTimeKind.Local).AddTicks(8694),
+                            RegisteredAt = new DateTime(2024, 10, 7, 16, 51, 43, 415, DateTimeKind.Local).AddTicks(3820),
                             SecurityStamp = "",
                             TokenCreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TokenExpiredAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -403,9 +354,9 @@ namespace CencosudApiLib.Web.Migrations
                         },
                         new
                         {
-                            Id = "7d1e29cc-c829-4cd5-afb3-6fc5e59eb9e2",
+                            Id = "673ce8be-783a-4b8c-88ce-31cd11bcc76d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "103da31c-8150-4ab9-a0d8-0212a240edc5",
+                            ConcurrencyStamp = "74494507-2686-47c3-a8a3-c014854426ef",
                             Email = "user9@example.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -413,10 +364,10 @@ namespace CencosudApiLib.Web.Migrations
                             Name = "User 9",
                             NormalizedEmail = "USER9@EXAMPLE.COM",
                             NormalizedUserName = "USER9",
-                            PasswordHash = "AQAAAAIAAYagAAAAEBCtfNpRi4Bm3iE5QZTPieqIYbKnyJk/QZM1ppg4FpZsriIdnX8NbibbcgSXhEjdpQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEIdMM7sJdVFZyoJJKV9PJDZpDLhdhiaGlAF/aVKN75qEh8sPGOnG9KlYqBI8wlBKMA==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "",
-                            RegisteredAt = new DateTime(2024, 10, 7, 16, 57, 51, 609, DateTimeKind.Local).AddTicks(9574),
+                            RegisteredAt = new DateTime(2024, 10, 7, 16, 51, 43, 482, DateTimeKind.Local).AddTicks(2033),
                             SecurityStamp = "",
                             TokenCreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TokenExpiredAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -425,9 +376,9 @@ namespace CencosudApiLib.Web.Migrations
                         },
                         new
                         {
-                            Id = "0bc51b55-0352-4a15-a43d-83e75e98aa8b",
+                            Id = "1a7c95b4-8851-4b28-987e-0c61feb77d1d",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "807f41e1-f66f-4123-a395-fef7e4165550",
+                            ConcurrencyStamp = "6b2e8cd1-58d4-49f9-be28-168a312c39d9",
                             Email = "user10@example.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -435,10 +386,10 @@ namespace CencosudApiLib.Web.Migrations
                             Name = "User 10",
                             NormalizedEmail = "USER10@EXAMPLE.COM",
                             NormalizedUserName = "USER10",
-                            PasswordHash = "AQAAAAIAAYagAAAAEK15XCnBPJaIpXIbOqkltq2WSa/4bt1oS5+4b9F7ViG+ms2dWyfw0EM98nTHSDv1Eg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEMkCAh0rJpB0LMiT2ZhA2C7hoB67bk0GW9Wz67PuBNTQc+d7CLbNaKe+0yIcUUneRA==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "",
-                            RegisteredAt = new DateTime(2024, 10, 7, 16, 57, 51, 667, DateTimeKind.Local).AddTicks(3561),
+                            RegisteredAt = new DateTime(2024, 10, 7, 16, 51, 43, 571, DateTimeKind.Local).AddTicks(1349),
                             SecurityStamp = "",
                             TokenCreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TokenExpiredAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -447,9 +398,9 @@ namespace CencosudApiLib.Web.Migrations
                         },
                         new
                         {
-                            Id = "5b23679e-c520-4077-9101-2c40797f5a39",
+                            Id = "373c7fea-0520-4308-8d37-f1770f117576",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "607d35a3-0410-4868-a45b-ac1b74bbd0b6",
+                            ConcurrencyStamp = "c253fdd8-c77b-4ac9-b0e1-dd0ca02a280f",
                             Email = "user11@example.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -457,10 +408,10 @@ namespace CencosudApiLib.Web.Migrations
                             Name = "User 11",
                             NormalizedEmail = "USER11@EXAMPLE.COM",
                             NormalizedUserName = "USER11",
-                            PasswordHash = "AQAAAAIAAYagAAAAEG21qZaley+v7pd7SLwEiB5e0hlArbNDiK3VjJ18aEf0RECnzY8H/jN6kA0RYewGgg==",
+                            PasswordHash = "AQAAAAIAAYagAAAAELOZGTNMrhfdVLfFrWzdtFl33+IHw5sFt9P5ZpQlLxkJIVANsiCGwl/m0KNrqN9qZQ==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "",
-                            RegisteredAt = new DateTime(2024, 10, 7, 16, 57, 51, 729, DateTimeKind.Local).AddTicks(4151),
+                            RegisteredAt = new DateTime(2024, 10, 7, 16, 51, 43, 654, DateTimeKind.Local).AddTicks(8566),
                             SecurityStamp = "",
                             TokenCreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TokenExpiredAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -469,9 +420,9 @@ namespace CencosudApiLib.Web.Migrations
                         },
                         new
                         {
-                            Id = "224bc834-908f-492b-878d-1005b9f2ae51",
+                            Id = "2cd94bcf-4883-4a30-b077-2f7bc91848ed",
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "268ecd6e-ff2d-4daf-8c6f-9f130c0104a6",
+                            ConcurrencyStamp = "4765c7ea-3458-434d-ade6-0247f8bb1abf",
                             Email = "user12@example.com",
                             EmailConfirmed = true,
                             IsDeleted = false,
@@ -479,10 +430,10 @@ namespace CencosudApiLib.Web.Migrations
                             Name = "User 12",
                             NormalizedEmail = "USER12@EXAMPLE.COM",
                             NormalizedUserName = "USER12",
-                            PasswordHash = "AQAAAAIAAYagAAAAEOsMJASKZvBg0hnUZqwMizD1XEml2MrAFz0YoxZo8UrDf3BUKdTKmPn6D8q0h1OpUQ==",
+                            PasswordHash = "AQAAAAIAAYagAAAAEJfWNnz9Cvz5CErxwK4t66bfTnp2RoAlElLM3V7r+JoFd1o9QCdU39pWiZ8rKctNGw==",
                             PhoneNumberConfirmed = false,
                             RefreshToken = "",
-                            RegisteredAt = new DateTime(2024, 10, 7, 16, 57, 51, 791, DateTimeKind.Local).AddTicks(4261),
+                            RegisteredAt = new DateTime(2024, 10, 7, 16, 51, 43, 726, DateTimeKind.Local).AddTicks(3942),
                             SecurityStamp = "",
                             TokenCreatedAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
                             TokenExpiredAt = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
@@ -539,32 +490,6 @@ namespace CencosudApiLib.Web.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Projects");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "A platform for online shopping",
-                            IsDeleted = false,
-                            Name = "E-Commerce Platform",
-                            Status = "Active"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "System to manage internal APIs",
-                            IsDeleted = false,
-                            Name = "Internal API Management",
-                            Status = "Development"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Description = "Mobile application for managing orders",
-                            IsDeleted = false,
-                            Name = "Mobile App",
-                            Status = "Testing"
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -696,62 +621,62 @@ namespace CencosudApiLib.Web.Migrations
                     b.HasData(
                         new
                         {
-                            UserId = "d135cbf1-ecca-4b33-9031-f6af2df6c59f",
+                            UserId = "33c4e333-c141-48eb-81d8-a98cd61880a0",
                             RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7211"
                         },
                         new
                         {
-                            UserId = "1feed60c-34bc-4d16-81fe-980fc25f408f",
+                            UserId = "5ae5719b-cab5-427e-9fa3-469e1dc41035",
                             RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7211"
                         },
                         new
                         {
-                            UserId = "4774afae-a7fa-47cd-8dd9-19b0e0107fa8",
+                            UserId = "c2328c59-a5db-4756-8800-512bf17ab76a",
                             RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7211"
                         },
                         new
                         {
-                            UserId = "3c76221e-d810-4637-ba3b-2a932bbd4ac7",
+                            UserId = "0483e647-701b-4930-a3a6-8cca99d8ed3c",
                             RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7211"
                         },
                         new
                         {
-                            UserId = "974c3b43-38f2-4c13-b232-41f11b6c4e6d",
+                            UserId = "da20ee8d-2d64-4b94-9eb4-f0aadefd8d9e",
                             RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7211"
                         },
                         new
                         {
-                            UserId = "569b4aac-8008-4d64-8e46-4eea60daca90",
+                            UserId = "542e2ebd-0d5a-4211-bf9c-550057de0fad",
                             RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7211"
                         },
                         new
                         {
-                            UserId = "8bb17cea-f1a4-4278-b2d0-932f3af15425",
+                            UserId = "e8e408b5-86b5-424f-b8df-ca946ba83970",
                             RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7211"
                         },
                         new
                         {
-                            UserId = "fcbce295-a7cf-44cb-b73f-b73aa240bfa6",
+                            UserId = "43207aee-2889-4ca4-a919-dbb663f9b209",
                             RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7211"
                         },
                         new
                         {
-                            UserId = "7d1e29cc-c829-4cd5-afb3-6fc5e59eb9e2",
+                            UserId = "673ce8be-783a-4b8c-88ce-31cd11bcc76d",
                             RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7211"
                         },
                         new
                         {
-                            UserId = "0bc51b55-0352-4a15-a43d-83e75e98aa8b",
+                            UserId = "1a7c95b4-8851-4b28-987e-0c61feb77d1d",
                             RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7211"
                         },
                         new
                         {
-                            UserId = "5b23679e-c520-4077-9101-2c40797f5a39",
+                            UserId = "373c7fea-0520-4308-8d37-f1770f117576",
                             RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7211"
                         },
                         new
                         {
-                            UserId = "224bc834-908f-492b-878d-1005b9f2ae51",
+                            UserId = "2cd94bcf-4883-4a30-b077-2f7bc91848ed",
                             RoleId = "2c5e174e-3b0e-446f-86af-483d56fd7211"
                         });
                 });
@@ -773,6 +698,15 @@ namespace CencosudApiLib.Web.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("CencosudApiLib.Models.Api", b =>
+                {
+                    b.HasOne("CencosudApiLib.Models.Auth.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("CencosudApiLib.Models.ApiInstance", b =>
