@@ -7,11 +7,9 @@ public class EndpointProfile : Profile
 {
     public EndpointProfile()
     {
-        CreateMap<Endpoint, InsertEndpointDto>();
-        CreateMap<Endpoint, ReadEndpointDto>()
-            .ForMember(dest => dest.Api, opt => opt.MapFrom(src => src.Api))
-            .ReverseMap();
-        CreateMap<Endpoint, UpdateEndpointDto>();
+        CreateMap<Endpoint, InsertEndpointDto>().ReverseMap();
+        CreateMap<Endpoint, ReadEndpointDto>().ReverseMap();
+        CreateMap<Endpoint, UpdateEndpointDto>().ReverseMap();
     }
 
 }

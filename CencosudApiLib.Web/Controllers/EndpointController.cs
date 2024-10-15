@@ -7,8 +7,10 @@ using CencosudApiLib.Data.Dtos;
 using Endpoint = CencosudApiLib.Models.Endpoint;
 
 namespace CencosudApiLib.Web.Controllers;
-
-public class EndpointController : GenericController<Endpoint, InsertEndpointDto, ReadEndpointDto, UpdateEndpointDto>
+public class EndpointQueryParams{
+    public int EndpointId { get; set; }
+}
+public class EndpointController : GenericController<Endpoint, InsertEndpointDto, ReadEndpointDto, UpdateEndpointDto, EndpointQueryParams>
 {
     public EndpointController(IEndpointService service, IMapper mapper, IHttpContextAccessor httpContextAccessor) : base(service, mapper, httpContextAccessor)
     {

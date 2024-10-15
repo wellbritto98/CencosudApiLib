@@ -12,7 +12,7 @@ public class ComponentInstanceProfile : Profile
             .ForMember(dest => dest.Component, opt => opt.MapFrom(src => src.Component))
             .ForMember(dest => dest.Endpoint, opt => opt.MapFrom(src => src.Endpoint))
             .ReverseMap();
-        CreateMap<ComponentInstance, UpdateComponentInstanceDto>().ReverseMap();
+        CreateMap<ComponentInstance, UpdateComponentInstanceDto>();
     }
 
 }

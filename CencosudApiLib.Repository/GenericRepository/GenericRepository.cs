@@ -112,30 +112,41 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     /// </summary>
     /// <param name="keyValues">Os valores chave da entidade.</param>
     /// <returns>A entidade correspondente ou null se não encontrada.</returns>
-    public async Task<T> GetByIdAsync(int id)
+     public async Task<T> GetByIdAsync(params object[] keyValues)
     {
         try
         {
-            // O método FindAsync já lida diretamente com a chave primária
-            return await _context.Set<T>().FindAsync(id);
-        }
-        catch (Exception ex)
-        {
-            throw new Exception(ex.Message);
-        }
-    }
+            var entityType = _context.Model.FindEntityType(typeof(T));
+            var keyProperties = entityType.FindPrimaryKey().Properties;
+            var virtualProperties = GetVirtualFields(typeof(T));
 
-    public async Task<T> GetByIdAsync(int key1, int key2)
-    {
-        try
-        {
-            return await _context.Set<T>().FindAsync(key1, key2);
+            var query = _context.Set<T>().AsQueryable();
+
+            if (virtualProperties.Count > 0)
+            {
+                foreach (var property in virtualProperties)
+                {
+                    query = IncludeNestedProperties(query, property);
+                }
+            }
+
+            // Adicionar cláusula WHERE para as chaves primárias
+            for (int i = 0; i < keyProperties.Count; i++)
+            {
+                var keyName = keyProperties[i].Name;
+                // Converter o valor da chave primária para o tipo correto
+                var keyValue = Convert.ChangeType(keyValues[i], keyProperties[i].ClrType);
+                query = query.Where(e => EF.Property<object>(e, keyName).Equals(keyValue));
+            }
+
+            return await query.FirstOrDefaultAsync();
         }
         catch (Exception ex)
         {
             throw new Exception(ex.Message);
         }
     }
+   
 
     /// <summary>
     /// Encontra entidades que correspondem aos critérios fornecidos em JSON.
