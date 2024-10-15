@@ -15,6 +15,7 @@ public class DataContext : IdentityDbContext<User>
     public DbSet<ApiInstance> ApiInstances { get; set; }
     public DbSet<ComponentInstance> ComponentInstance { get; set; }
     public DbSet<Project> Projects { get; set; }
+    public DbSet<CencosudApiLib.Models.Component> Components { get; set; }
 
     public DataContext(DbContextOptions<DataContext> options) : base(options)
     {

@@ -99,6 +99,8 @@ builder.Services.AddScoped<IEndpointService, EndpointService>();
 builder.Services.AddScoped<IEndpointRepository, EndpointRepository>();
 builder.Services.AddScoped<IComponentInstanceService, ComponentInstanceService>();
 builder.Services.AddScoped<IComponentInstanceRepository, ComponentInstanceRepository>();
+builder.Services.AddScoped<IComponentService, ComponentService>();
+builder.Services.AddScoped<IComponentRepository, ComponentRepository>();
 
 //////////////////////////////////////////
 /////////////////////////////////////////

@@ -15,5 +15,6 @@ public class Endpoint : BaseEntity
     public string Path { get; set; }
     public string Method { get; set; }
     public string Description { get; set; }
+     public virtual ICollection<ComponentInstance> ComponentInstances { get; set; }
 
 }
