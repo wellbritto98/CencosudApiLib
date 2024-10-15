@@ -10,6 +10,7 @@ namespace CencosudApiLib.Data;
 
 public class DataContext : IdentityDbContext<User>
 {
+    public DbSet<Endpoint> Endpoints { get; set; }
     public DbSet<Api> Apis { get; set; }
     public DbSet<ApiInstance> ApiInstances { get; set; }
     public DbSet<ComponentInstance> ComponentInstance { get; set; }

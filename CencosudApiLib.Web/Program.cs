@@ -95,6 +95,8 @@ builder.Services.AddScoped<IApiInstanceService, ApiInstanceService>();
 builder.Services.AddScoped<IApiInstanceRepository, ApiInstanceRepository>();
 builder.Services.AddScoped<IApiService, ApiService>();
 builder.Services.AddScoped<IApiRepository, ApiRepository>();
+builder.Services.AddScoped<IEndpointService, EndpointService>();
+builder.Services.AddScoped<IEndpointRepository, EndpointRepository>();
 builder.Services.AddScoped<IComponentInstanceService, ComponentInstanceService>();
 builder.Services.AddScoped<IComponentInstanceRepository, ComponentInstanceRepository>();
 
