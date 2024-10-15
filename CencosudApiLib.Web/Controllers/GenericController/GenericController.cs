@@ -39,6 +39,48 @@ public class GenericController<T1, T2, T3, T4> : ControllerBase where T1 : BaseE
         _httpContextAccessor = httpContextAccessor;
     }
 
+
+
+    /// <summary>
+    /// Retorna um item pelo ID.
+    /// </summary>
+    /// <param name="id">
+    /// ID do item no formato JSON. O JSON deve conter as chaves primárias necessárias da entidade no seguinte formato:
+    /// {
+    ///     "Chave1": "Valor1",
+    ///     "Chave2": "Valor2"
+    /// }
+    /// Exemplo para uma chave composta:
+    /// {
+    ///     "Id": "123",
+    ///     "SubId": "456"
+    /// }
+    /// </param>
+    /// <returns>O item correspondente da entidade.</returns>
+    [HttpGet("Get/{id}")]
+    [SwaggerOperation(Summary = "Retorna um item pelo ID.",
+        Description = "Esse endpoint permite a busca de um item no banco de dados através de sua chave primária, fornecida em formato JSON. " +
+        "ID do item no formato JSON. O JSON deve conter as chaves primárias necessárias da entidade no seguinte formato:" +
+        "{ \"Chave1\": \"Valor1\",\r\n\"Chave2\": \"Valor2\" }")]
+    [ProducesResponseType(StatusCodes.Status200OK)]  // Removido o uso de tipos genéricos nos atributos
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [SwaggerRequestExample(typeof(string), typeof(ExampleId))]
+    public async Task<ActionResult<T3>> Get(int id)
+    {
+        try
+        {
+            var entity = await _service.GetByIdAsync(id);
+            if (entity == null) return NotFound();
+
+            return Ok(_mapper.Map<T3>(entity));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
     /// <summary>
     /// Retorna uma lista de todos os itens da entidade.
     /// </summary>
@@ -93,23 +135,8 @@ public class GenericController<T1, T2, T3, T4> : ControllerBase where T1 : BaseE
         }
     }
 
-    /// <summary>
-    /// Retorna um item pelo ID.
-    /// </summary>
-    /// <param name="id">
-    /// ID do item no formato JSON. O JSON deve conter as chaves primárias necessárias da entidade no seguinte formato:
-    /// {
-    ///     "Chave1": "Valor1",
-    ///     "Chave2": "Valor2"
-    /// }
-    /// Exemplo para uma chave composta:
-    /// {
-    ///     "Id": "123",
-    ///     "SubId": "456"
-    /// }
-    /// </param>
-    /// <returns>O item correspondente da entidade.</returns>
-    [HttpGet("Get/{id}")]
+
+    [HttpGet("Get/{key1}/{key2}")]
     [SwaggerOperation(Summary = "Retorna um item pelo ID.",
         Description = "Esse endpoint permite a busca de um item no banco de dados através de sua chave primária, fornecida em formato JSON. " +
         "ID do item no formato JSON. O JSON deve conter as chaves primárias necessárias da entidade no seguinte formato:" +
@@ -118,14 +145,11 @@ public class GenericController<T1, T2, T3, T4> : ControllerBase where T1 : BaseE
     [ProducesResponseType(StatusCodes.Status404NotFound)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [SwaggerRequestExample(typeof(string), typeof(ExampleId))]
-    public async Task<ActionResult<T3>> Get(string id)
+    public async Task<ActionResult<T3>> GetCompositeKeys(int key1, int key2)
     {
         try
         {
-            var dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(id);
-            object[] keyValues = dict.Values.ToArray();
-
-            var entity = await _service.GetByIdAsync(keyValues);
+            var entity = await _service.GetByIdAsync(key1, key2);
             if (entity == null) return NotFound();
 
             return Ok(_mapper.Map<T3>(entity));
@@ -135,6 +159,7 @@ public class GenericController<T1, T2, T3, T4> : ControllerBase where T1 : BaseE
             return BadRequest(ex.Message);
         }
     }
+
 
     /// <summary>
     /// Insere um novo item no banco de dados.
@@ -185,14 +210,11 @@ public class GenericController<T1, T2, T3, T4> : ControllerBase where T1 : BaseE
     [ProducesResponseType(StatusCodes.Status200OK)]  // Removido o uso de tipos genéricos nos atributos
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [SwaggerRequestExample(typeof(string), typeof(ExampleId))]
-    public async Task<ActionResult> Put([FromQuery] string id, T4 dto)
+    public async Task<ActionResult> Put([FromQuery] int id, T4 dto)
     {
         try
         {
-            var dict = JsonConvert.DeserializeObject<Dictionary<string, object>>(id);
-            object[] keyValues = dict.Values.ToArray();
-            var entity = await _service.GetByIdAsync(keyValues);
-
+            var entity = await _service.GetByIdAsync(id);
             var mappedEntity = _mapper.Map(dto, entity);
             await _service.UpdateAsync(mappedEntity);
 

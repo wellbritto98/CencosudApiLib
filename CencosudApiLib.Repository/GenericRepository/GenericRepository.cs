@@ -112,34 +112,24 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     /// </summary>
     /// <param name="keyValues">Os valores chave da entidade.</param>
     /// <returns>A entidade correspondente ou null se não encontrada.</returns>
-    public async Task<T> GetByIdAsync(params object[] keyValues)
+    public async Task<T> GetByIdAsync(int id)
     {
         try
         {
-            var entityType = _context.Model.FindEntityType(typeof(T));
-            var keyProperties = entityType.FindPrimaryKey().Properties;
-            var virtualProperties = GetVirtualFields(typeof(T));
+            // O método FindAsync já lida diretamente com a chave primária
+            return await _context.Set<T>().FindAsync(id);
+        }
+        catch (Exception ex)
+        {
+            throw new Exception(ex.Message);
+        }
+    }
 
-            var query = _context.Set<T>().AsQueryable();
-
-            if (virtualProperties.Count > 0)
-            {
-                foreach (var property in virtualProperties)
-                {
-                    query = IncludeNestedProperties(query, property);
-                }
-            }
-
-            // Adicionar cláusula WHERE para as chaves primárias
-            for (int i = 0; i < keyProperties.Count; i++)
-            {
-                var keyName = keyProperties[i].Name;
-                // Converter o valor da chave primária para o tipo correto
-                var keyValue = Convert.ChangeType(keyValues[i], keyProperties[i].ClrType);
-                query = query.Where(e => EF.Property<object>(e, keyName).Equals(keyValue));
-            }
-
-            return await query.FirstOrDefaultAsync();
+    public async Task<T> GetByIdAsync(int key1, int key2)
+    {
+        try
+        {
+            return await _context.Set<T>().FindAsync(key1, key2);
         }
         catch (Exception ex)
         {

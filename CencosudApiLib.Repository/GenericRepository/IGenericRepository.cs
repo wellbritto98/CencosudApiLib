@@ -36,7 +36,8 @@ public interface IGenericRepository<T> where T : BaseEntity
     /// </summary>
     /// <param name="keyValues">Os valores chave da entidade.</param>
     /// <returns>A entidade correspondente ou null se não encontrada.</returns>
-    Task<T> GetByIdAsync(params object[] keyValues);
+    Task<T> GetByIdAsync(int id);
+    Task<T> GetByIdAsync(int key1, int key2);
 
     /// <summary>
     /// Adiciona uma nova entidade ao banco de dados.

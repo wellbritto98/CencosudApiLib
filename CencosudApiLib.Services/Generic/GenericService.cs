@@ -19,9 +19,13 @@ namespace CencosudApiLib.Services.Generic
             return await _repository.GetAllAsync();
         }
 
-        public async Task<T> GetByIdAsync(params object[] keyValues)
+        public async Task<T> GetByIdAsync(int id)
         {
-            return await _repository.GetByIdAsync(keyValues);
+            return await _repository.GetByIdAsync(id);
+        }
+        public async Task<T> GetByIdAsync(int key1, int key2)
+        {
+            return await _repository.GetByIdAsync(key1, key2);
         }
 
         public async Task<IEnumerable<T>> FindAsync(string json)
