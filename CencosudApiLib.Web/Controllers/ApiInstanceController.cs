@@ -17,7 +17,7 @@ public class ApiInstanceController : GenericController<ApiInstance, InsertApiIns
 
     }
 
-        [HttpGet("Get/{id}")]
+        [HttpGet("Get/{projectId}/{apiId}")]
     [SwaggerOperation(Summary = "Retorna um item pelo ID.",
         Description = "Esse endpoint permite a busca de um item no banco de dados através de sua chave primária, fornecida em formato JSON. " +
         "ID do item no formato JSON. O JSON deve conter as chaves primárias necessárias da entidade no seguinte formato:" +
