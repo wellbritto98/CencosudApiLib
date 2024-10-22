@@ -8,7 +8,6 @@ namespace CencosudApiLib.Services.Generic
     {
         Task<IEnumerable<T>> GetAllAsync();
         Task<T> GetByIdAsync(params object[] keyValues);
-        Task<IEnumerable<T>> FindAsync(string json);
         Task<T> AddAsync(T entity);
         Task<T> UpdateAsync(T entity);
         Task DeleteAsync(params object[] keyValues);

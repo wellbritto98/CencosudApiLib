@@ -111,37 +111,6 @@ public async Task<ActionResult<T3>> Get([FromQuery] T5 queryParam)
         }
     }
 
-    /// <summary>
-    /// Retorna uma lista de itens filtrados pelos campos e operadores especificados no JSON.
-    /// </summary>
-    /// <param name="json">
-    /// JSON contendo os filtros no formato:
-    /// {
-    ///     "campo@operador": "valor@tipoDoValor"
-    /// }
-    /// Exemplos: 
-    /// - {"Nome@igual": "John Doe@System.String"}
-    /// - {"Idade@maior": "30@System.Int32"}
-    /// </param>
-    /// <returns>Uma lista de itens filtrados da entidade.</returns>
-    [HttpGet("Find")]
-    [SwaggerOperation(Summary = "Retorna uma lista de itens filtrados.",
-        Description = "Esse endpoint permite a filtragem dinâmica de registros da entidade através de JSON, especificando campos, operadores e tipos.")]
-    [ProducesResponseType(StatusCodes.Status200OK)]  // Removido o uso de tipos genéricos nos atributos
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [SwaggerRequestExample(typeof(string), typeof(ExampleFilters))]
-    public async Task<ActionResult<IEnumerable<T3>>> Find([FromQuery] string json)
-    {
-        try
-        {
-            var entities = await _service.FindAsync(json);
-            return Ok(_mapper.Map<IEnumerable<T3>>(entities));
-        }
-        catch (Exception ex)
-        {
-            return BadRequest(ex.Message);
-        }
-    }
 
 
     /// <summary>

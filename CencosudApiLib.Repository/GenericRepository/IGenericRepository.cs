@@ -15,21 +15,19 @@ public interface IGenericRepository<T> where T : BaseEntity
     Task<IEnumerable<T>> GetAllAsync();
 
     /// <summary>
-    /// Encontra entidades que correspondem aos critérios fornecidos em JSON.
+    /// Encontra entidades que correspondem aos critérios fornecidos por uma função de filtro.
     /// </summary>
-    /// <param name="json">
-    /// O JSON que contém os critérios de filtro no formato:
+    /// <param name="queryFilter">
+    /// Uma função que aplica critérios de filtro a um IQueryable.
     /// 
-    /// {
-    ///     "campo@operador": "valor@tipoDoValor"
-    /// }
+    /// Exemplo de uso:
     /// 
-    /// Exemplos:
-    /// - {"Nome@igual": "John Doe@System.String"}
-    /// - {"Idade@maior": "30@System.Int32"}
+    /// <code>
+    /// var resultados = await repository.FindAsync(query => query.Where(e => e.Nome == "John Doe" && e.Idade > 30));
+    /// </code>
     /// </param>
     /// <returns>Uma lista de entidades que atendem aos critérios de filtro.</returns>
-    Task<IEnumerable<T>> FindAsync(string json);
+    Task<IEnumerable<T>> FindAsync(Func<IQueryable<T>, IQueryable<T>> queryFilter = null);
 
     /// <summary>
     /// Obtém uma entidade por seus valores chave.

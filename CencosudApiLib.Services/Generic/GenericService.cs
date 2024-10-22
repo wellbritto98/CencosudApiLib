@@ -24,11 +24,6 @@ namespace CencosudApiLib.Services.Generic
             return await _repository.GetByIdAsync(keyValues);
         }
 
-        public async Task<IEnumerable<T>> FindAsync(string json)
-        {
-            return await _repository.FindAsync(json);
-        }
-
         public async Task<T> AddAsync(T entity)
         {
             return await _repository.AddAsync(entity);

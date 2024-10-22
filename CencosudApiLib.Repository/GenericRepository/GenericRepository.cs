@@ -112,7 +112,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     /// </summary>
     /// <param name="keyValues">Os valores chave da entidade.</param>
     /// <returns>A entidade correspondente ou null se não encontrada.</returns>
-     public async Task<T> GetByIdAsync(params object[] keyValues)
+    public async Task<T> GetByIdAsync(params object[] keyValues)
     {
         try
         {
@@ -146,7 +146,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
             throw new Exception(ex.Message);
         }
     }
-   
+
 
     /// <summary>
     /// Encontra entidades que correspondem aos critérios fornecidos em JSON.
@@ -174,115 +174,21 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     /// - "menorigual": compara se o valor é menor ou igual ao campo (suporta IComparable).
     /// </param>
     /// <returns>Uma lista de entidades que atendem aos critérios de filtro.</returns>
-    public async Task<IEnumerable<T>> FindAsync(string json)
+    public async Task<IEnumerable<T>> FindAsync(Func<IQueryable<T>, IQueryable<T>> queryFilter = null)
     {
         try
         {
-            // Deserializar o JSON para um objeto Dictionary
-            var filters = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+            // Iniciar a consulta no DbSet<T>
+            IQueryable<T> query = _context.Set<T>();
 
-            // Iniciar a consulta
-            var query = _context.Set<T>().AsQueryable();
-
-            // Obter as propriedades virtuais da entidade
-            var virtualProperties = GetVirtualFields(typeof(T));
-
-            // Iterar sobre o dicionário e construir a consulta
-            foreach (var filter in filters)
+            // Aplicar filtros se fornecido
+            if (queryFilter != null)
             {
-                // Dividir a chave em campo e operador
-                var parts = filter.Key.Split('@');
-                var field = parts[0];
-                var operador = parts[1];
-
-                // Converter o valor para o tipo correto
-                var valueParts = filter.Value.Split('@');
-                var valueStr = valueParts[0];
-                var valueTypeStr = valueParts[1];
-                var valueType = Type.GetType(valueTypeStr);
-                object value;
-
-                // Converter o valor para o tipo apropriado
-                if (valueType == typeof(DateTime))
-                {
-                    value = DateTime.Parse(valueStr, null, System.Globalization.DateTimeStyles.RoundtripKind);
-                }
-                else
-                {
-                    value = Convert.ChangeType(valueStr, valueType);
-                }
-
-                // Construir a consulta com base no operador e no tipo do valor
-                switch (operador)
-                {
-                    case "igual":
-                        query = query.Where(e => EF.Property<object>(e, field).Equals(value));
-                        break;
-                    case "diferente":
-                        query = query.Where(e => !EF.Property<object>(e, field).Equals(value));
-                        break;
-                    case "maior":
-                        if (valueType == typeof(DateTime))
-                        {
-                            query = query.Where(e => EF.Property<DateTime>(e, field) > (DateTime)value);
-                        }
-                        else if (typeof(IComparable).IsAssignableFrom(valueType))
-                        {
-                            query = query.Where(e => ((IComparable)EF.Property<object>(e, field)).CompareTo(value) > 0);
-                        }
-                        else
-                        {
-                            throw new ArgumentException($"Tipo de dado não suportado para o operador 'maior': {valueType}");
-                        }
-                        break;
-                    case "menor":
-                        if (valueType == typeof(DateTime))
-                        {
-                            query = query.Where(e => EF.Property<DateTime>(e, field) < (DateTime)value);
-                        }
-                        else if (typeof(IComparable).IsAssignableFrom(valueType))
-                        {
-                            query = query.Where(e => ((IComparable)EF.Property<object>(e, field)).CompareTo(value) < 0);
-                        }
-                        else
-                        {
-                            throw new ArgumentException($"Tipo de dado não suportado para o operador 'menor': {valueType}");
-                        }
-                        break;
-                    case "maiorigual":
-                        if (valueType == typeof(DateTime))
-                        {
-                            query = query.Where(e => EF.Property<DateTime>(e, field) >= (DateTime)value);
-                        }
-                        else if (typeof(IComparable).IsAssignableFrom(valueType))
-                        {
-                            query = query.Where(e => ((IComparable)EF.Property<object>(e, field)).CompareTo(value) >= 0);
-                        }
-                        else
-                        {
-                            throw new ArgumentException($"Tipo de dado não suportado para o operador 'maiorigual': {valueType}");
-                        }
-                        break;
-                    case "menorigual":
-                        if (valueType == typeof(DateTime))
-                        {
-                            query = query.Where(e => EF.Property<DateTime>(e, field) <= (DateTime)value);
-                        }
-                        else if (typeof(IComparable).IsAssignableFrom(valueType))
-                        {
-                            query = query.Where(e => ((IComparable)EF.Property<object>(e, field)).CompareTo(value) <= 0);
-                        }
-                        else
-                        {
-                            throw new ArgumentException($"Tipo de dado não suportado para o operador 'menorigual': {valueType}");
-                        }
-                        break;
-                    default:
-                        throw new ArgumentException($"Operador '{operador}' não é suportado.");
-                }
+                query = queryFilter(query);
             }
 
-            // Adicionar includes para propriedades virtuais
+            // Incluir propriedades virtuais
+            var virtualProperties = GetVirtualFields(typeof(T));
             foreach (var property in virtualProperties)
             {
                 query = IncludeNestedProperties(query, property);
@@ -293,7 +199,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
         }
         catch (Exception ex)
         {
-            throw new Exception(ex.Message);
+            throw new Exception($"Erro ao executar a consulta: {ex.Message}", ex);
         }
     }
 
