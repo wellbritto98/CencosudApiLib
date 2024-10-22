@@ -8,9 +8,9 @@ public class ReadApiInstanceDto : BaseDto
 {
 
     public int ProjectId {  get; set; }
-    public virtual ReadProjectDto? Project { get; set; }
+    public ReadProjectDto? Project { get; set; }
 
     public int ApiId {  get; set; }
-    public virtual ReadApiDto? Api { get; set; }
+    public ReadApiDto? Api { get; set; }
 
 }

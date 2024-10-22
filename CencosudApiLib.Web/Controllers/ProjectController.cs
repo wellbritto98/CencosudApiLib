@@ -6,6 +6,7 @@ using CencosudApiLib.Models;
 using CencosudApiLib.Data.Dtos;
 using CencosudProjectLib.Models;
 using CencosudProjectLib.Data.Dtos;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CencosudApiLib.Web.Controllers;
 public class ProjectQueryParams{
@@ -17,5 +18,12 @@ public class ProjectController : GenericController<Project, InsertProjectDto, Re
     {
 
     }
+    [HttpGet("GetApiInstances")]
+    public async Task<IActionResult> GetApiInstances([FromQuery]int projectId)
+    {
+        var result = await ((IProjectService)_service).GetApiInstances(projectId);
+        return Ok(result);
+    }
+    
 
 }

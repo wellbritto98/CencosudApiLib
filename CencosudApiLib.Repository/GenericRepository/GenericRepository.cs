@@ -20,7 +20,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
     }
 
     /// <summary>
-    /// Adiciona os joins dinâmicos no banco de dados para carregar propriedades virtuais aninhadas.
+    /// Adiciona os joins dinâmicos no banco de dados para carregar propriedades virtuais da primeira camada.
     /// </summary>
     /// <typeparam name="T">O tipo da entidade.</typeparam>
     /// <param name="query">A consulta sobre a qual os includes serão aplicados.</param>
@@ -37,17 +37,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
 
             // Adicionar o include para a propriedade atual usando lambda-based include
             query = query.Include(includePath);
-
-            // Recursivamente adicionar includes para propriedades virtuais dentro desta propriedade
-            var nestedVirtualProperties = property.PropertyType.GetProperties()
-                .Where(p => p.GetMethod.IsVirtual && p.PropertyType.IsClass && p.PropertyType != typeof(string))
-                .ToList();
-
-            foreach (var nestedProperty in nestedVirtualProperties)
-            {
-                // Use lambda-based include for nested properties
-                query = IncludeNestedProperties(query, nestedProperty, includePath);
-            }
         }
 
         return query;
@@ -181,27 +170,21 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
             // Iniciar a consulta no DbSet<T>
             IQueryable<T> query = _context.Set<T>();
 
-            // Aplicar filtros se fornecido
+            // Aplicar filtros e Includes se fornecido
             if (queryFilter != null)
             {
                 query = queryFilter(query);
             }
-
-            // Incluir propriedades virtuais
-            var virtualProperties = GetVirtualFields(typeof(T));
-            foreach (var property in virtualProperties)
-            {
-                query = IncludeNestedProperties(query, property);
-            }
-
+            var result = await query.ToListAsync();
             // Executar a consulta e retornar o resultado
-            return await query.ToListAsync();
+            return result;
         }
         catch (Exception ex)
         {
             throw new Exception($"Erro ao executar a consulta: {ex.Message}", ex);
         }
     }
+
 
 
     /// <summary>

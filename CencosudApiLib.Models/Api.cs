@@ -13,7 +13,7 @@ public class Api : BaseEntity
     public string? Description { get; set; }
     public string BaseUrl { get; set; }
     public string Version { get; set; }
-    public virtual ICollection<ApiInstance> ApiInstances { get; set; }
-    public virtual ICollection<Endpoint> Endpoints { get; set; }
+    public ICollection<ApiInstance> ApiInstances { get; set; }
+    public ICollection<Endpoint> Endpoints { get; set; }
 
 }

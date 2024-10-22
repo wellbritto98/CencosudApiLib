@@ -12,6 +12,7 @@ namespace CencosudApiLib.Web.Controllers.GenericController;
 
 [ApiController]
 [Route("api/[controller]")]
+[Authorize]
 /// <summary>
 /// Controlador genérico que fornece endpoints CRUD.
 /// T1 = Entidade, T2 = DTO para Inserção, T3 = DTO para Leitura, T4 = DTO para Atualização.
@@ -57,7 +58,7 @@ public class GenericController<T1, T2, T3, T4, T5> : ControllerBase where T1 : B
     /// }
     /// </param>
     /// <returns>O item correspondente da entidade.</returns>
-    [HttpGet("Get/")]
+    [HttpGet("Get")]
     [SwaggerOperation(Summary = "Retorna um item pelo ID.",
         Description = "Esse endpoint permite a busca de um item no banco de dados através de sua chave primária, fornecida em formato JSON. " +
         "ID do item no formato JSON. O JSON deve conter as chaves primárias necessárias da entidade no seguinte formato:" +

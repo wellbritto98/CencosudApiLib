@@ -12,6 +12,6 @@ public class Component : BaseEntity
     public int Id { get; set; }
     public ComponentType Type { get; set; }
     public string Description { get; set; }
-    public virtual ICollection<ComponentInstance> ComponentInstances { get; set; }
+    public ICollection<ComponentInstance> ComponentInstances { get; set; }
 
 }
