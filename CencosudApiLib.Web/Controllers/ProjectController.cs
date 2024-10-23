@@ -19,10 +19,10 @@ public class ProjectController : GenericController<Project, InsertProjectDto, Re
 
     }
     [HttpGet("GetApiInstances")]
-    public async Task<IActionResult> GetApiInstances([FromQuery]int projectId)
+    public async Task<List<ReadApiInstanceDto>?> GetApiInstances([FromQuery]int projectId)
     {
         var result = await ((IProjectService)_service).GetApiInstances(projectId);
-        return Ok(result);
+        return result;
     }
     
 
