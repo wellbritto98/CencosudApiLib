@@ -4,7 +4,7 @@ namespace CencosudApiLib.Data.Dtos;
 
 public class InsertApiInstanceDto : BaseDto
 {
-    public string ProjectId {  get; set; }
-    public string ApiId {  get; set; }
+    public int ProjectId {  get; set; }
+    public int ApiId {  get; set; }
 
 }
