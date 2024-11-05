@@ -10,6 +10,7 @@ public class Component : BaseEntity
 {
     [Key, Column(Order = 0)]
     public int Id { get; set; }
+    [EnumDataType(typeof(ComponentType))]
     public ComponentType Type { get; set; }
     public string Description { get; set; }
     public ICollection<ComponentInstance> ComponentInstances { get; set; }
